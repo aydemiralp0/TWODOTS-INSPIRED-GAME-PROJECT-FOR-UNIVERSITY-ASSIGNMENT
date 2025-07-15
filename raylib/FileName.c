@@ -31,7 +31,7 @@ bool gameOver = false;
 bool levelUp = false;
 bool showLevelUpScreen = false;
 bool loopDetected = false;
-float volume = 0.5f;  // Başlangıç sesi
+float volume = 0.5f; 
 float levelUpTimer = 0.0f;
 bool showhowtoplay = false;
 bool showSettings = false;
@@ -58,7 +58,7 @@ typedef enum GameState {
     LEVEL_SELECT,
     PLAYING,
     LEVEL_COMPLETE,
-    SETTINGS_MENU  // Yeni eklenen
+    SETTINGS_MENU  
 } GameState;
 GameState gameState = MENU;
 int currentLevelNumber = 1;
@@ -175,25 +175,24 @@ int main() {
     srand(time(NULL));
     Texture2D super1 = LoadTexture("super2.jpg");
     Texture2D super2 = LoadTexture("super1.jpg");
-    Music music = LoadMusicStream("soundtrack.wav"); // muzik dosyasi
+    Music music = LoadMusicStream("soundtrack.wav"); 
     PlayMusicStream(music);  
     bool musicPlaying = true;
 
     // Load Sounds
-    clickSound = LoadSound("clicksound.mp3"); // clicksound sesi
+    clickSound = LoadSound("clicksound.mp3"); 
     if (clickSound.frameCount == 0) {
         printf("Hata: clicksound.mp3 yuklenemedi! Dosya yolunu kontrol edin.\n");
     }
-    popSound = LoadSound("pop.mp3"); // patlatma sesi
+    popSound = LoadSound("pop.mp3"); 
     if (popSound.frameCount == 0) {
         printf("Hata: pop.mp3 yuklenemedi! Dosya yolunu kontrol edin.\n");
     }
-    levelCompleteSound = LoadSound("levelcomplete.mp3"); // level tamamlama sesi
+    levelCompleteSound = LoadSound("levelcomplete.mp3"); 
     if (levelCompleteSound.frameCount == 0) {
         printf("Hata: levelcomplete.mp3 yuklenemedi! Dosya yolunu kontrol edin.\n");
     }
 
-    // background muzigi sinus dalgariyla
     short* musicData = GenerateSineWaveData(220.0f, 10.0f, 44100);
     backgroundMusic = LoadMusicStreamFromMemory(".raw", musicData, 44100 * 10.0f * 2);
     free(musicData);
@@ -224,7 +223,7 @@ int main() {
         case MENU:
             DrawMainMenu();
             if (showSettings == true){
-                Rectangle buttonBounds = { SCREEN_WIDTH / 2 - 130, SCREEN_HEIGHT / 2 - 50, 260, 35 }; //muzik butonu
+                Rectangle buttonBounds = { SCREEN_WIDTH / 2 - 130, SCREEN_HEIGHT / 2 - 50, 260, 35 }; 
                 if (CheckCollisionPointRec(GetMousePosition(), buttonBounds) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
                 {
                     if (musicPlaying)
@@ -607,7 +606,7 @@ int main() {
 
             // Hedef resim yüksekliği: panelin içine sığacak şekilde scale hesapla
             float maxImageWidth = (panelWidth - spacing) / 2.0f;
-            float maxImageHeight = panelHeight * 0.8f; // biraz boşluk kalsın
+            float maxImageHeight = panelHeight * 0.8f; 
 
             // Her iki boyuta göre en küçük scale'i seç
             float scaleX = maxImageWidth / imgWidth;
@@ -637,7 +636,7 @@ int main() {
 
         }
     }
-    UnloadMusicStream(music);     // Bellekten sil
+    UnloadMusicStream(music);     
 
     UnloadSound(clickSound);
     UnloadSound(popSound);
@@ -664,16 +663,16 @@ void InitGame() {
     gameOver = false;
     selectedCount = 0;
     InitGrid();
-    UpdateWindowSize(); // Set initial window size
+    UpdateWindowSize(); 
 }
 
 Level InitLevel(int level) {
     Level newLevel = { 0 };
     newLevel.level = level;
-    newLevel.gridSize = (level <= 2) ? 6 : (level <= 4) ? 7 : 8; // Seviyeye göre grid boyutu
+    newLevel.gridSize = (level <= 2) ? 6 : (level <= 4) ? 7 : 8; 
     newLevel.moves = 25 + level * 5;
     for (int i = 0; i < COLOR_COUNT; i++) {
-        newLevel.targetCount[i] = (i % 2 == 0) ? 8 + level * 2 : 0; // İki renk hedefi
+        newLevel.targetCount[i] = (i % 2 == 0) ? 8 + level * 2 : 0; 
     }
     if (level >= 3) {
         int extraColor = GetRandomValue(0, COLOR_COUNT - 1);
@@ -715,7 +714,7 @@ Level InitLevel(int level) {
         newLevel.obstacles[0] = (Obstacle){ 0, 0 };
         newLevel.obstacles[1] = (Obstacle){ 7, 0 };
         newLevel.obstacles[2] = (Obstacle){ 0, 5 };
-        newLevel.obstacles[3] = (Obstacle){ 0, 6 };                             //sütun satır şeklinde yazılıyor <3
+        newLevel.obstacles[3] = (Obstacle){ 0, 6 };                             
         newLevel.obstacles[4] = (Obstacle){ 0, 7 };
         newLevel.obstacles[5] = (Obstacle){ 1, 6 };
         newLevel.obstacles[6] = (Obstacle){ 1, 7 };
@@ -809,7 +808,7 @@ void InitGrid() {
             grid[y][x] = GetRandomValue(0, COLOR_COUNT - 1);
             cellAnimations[y][x].scale = 0.0f;
             cellAnimations[y][x].timer = 0.5f + (y * gridSize + x) * 0.05f;
-            cellAnimations[y][x].offsetY = -CELL_SIZE; // Start above grid
+            cellAnimations[y][x].offsetY = -CELL_SIZE; 
             printf("grid[%d][%d] = %d\n", y, x, grid[y][x]);
         }
 
@@ -823,7 +822,7 @@ void InitGrid() {
             grid[y][x] = OBSTACLE_CELL;
         }
     }
-    UpdateWindowSize(); // Update window size when grid changes
+    UpdateWindowSize(); 
 }
 
 bool IsAlreadySelected(int x, int y) {
@@ -989,7 +988,7 @@ void ApplyGravity() {
         int tempGrid[MAX_GRID_SIZE];
         int tempIndex = 0;
         for (int y = 0; y < gridSize; y++) {
-            if (grid[y][x] >= 0) { // Sadece topları al (0 veya pozitif)
+            if (grid[y][x] >= 0) { 
                 tempGrid[tempIndex] = grid[y][x];
                 tempIndex++;
             }
@@ -1226,7 +1225,7 @@ void DrawLevelSelect() {
             gameState = PLAYING;
             movesLeft = levels[currentLevelNumber - 1].moves;
             gridSize = levels[currentLevelNumber - 1].gridSize;
-            levels[currentLevelNumber - 1] = InitLevel(currentLevelNumber); // Seviye hedeflerini sıfırla
+            levels[currentLevelNumber - 1] = InitLevel(currentLevelNumber); 
             InitGrid();
             transitionTimer = TRANSITION_DURATION;
             inTransition = true;
@@ -1236,17 +1235,17 @@ void DrawLevelSelect() {
 
     // Veteran butonu (sol alta)
     Rectangle veteranButton = { 10, SCREEN_HEIGHT - 60, 200, 50 };
-    bool isVeteranMode = (currentLevelNumber == MAX_LEVELS); // Veteran modu açık mı?
+    bool isVeteranMode = (currentLevelNumber == MAX_LEVELS); 
     DrawRectangleRounded(veteranButton, 0.2f, 10, CheckCollisionPointRec(mouse, veteranButton) ? (Color) { 200, 200, 200, 255 } : (Color) { 220, 220, 220, 255 });
     DrawText(isVeteranMode ? "Veteran: Kapali" : "Veteran: Acik", veteranButton.x + 30, veteranButton.y + 15, 20, (Color) { 80, 80, 80, 255 });
 
     // Veteran butonuna tıklama kontrolü (toggle mantığı)
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(mouse, veteranButton)) {
         if (isVeteranMode) {
-            currentLevelNumber = 1; // Veteran modunu kapat, sadece 1. seviye açık
+            currentLevelNumber = 1; 
         }
         else {
-            currentLevelNumber = MAX_LEVELS; // Veteran modunu aç, tüm seviyeler açık
+            currentLevelNumber = MAX_LEVELS; 
         }
         if (soundOn) PlaySound(clickSound);
     }
